@@ -29,5 +29,8 @@ class IPAddress{
 			return IPOctets[index];
 		}
 		
+		//computations and stuff
+		void 
+		
 		
 };
