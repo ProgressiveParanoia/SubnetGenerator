@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
 		std::cin >> choice;
 		
 		if(choice == '1'){
-			
+			myIP.createIP();
 			system("pause>0");
 		}
 	}while(choice!='2');
@@ -24,4 +24,4 @@ int main(int argc, char** argv) {
    // std::cout<<binary<<"\n";
 	
 	return 0;
-}
+}	
