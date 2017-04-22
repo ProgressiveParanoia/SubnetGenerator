@@ -4,10 +4,10 @@ class IPAddress{
 	
 	private:
 		int increment;
+		int IPOctets[4];
 		char IPClass;
-		std::string IPOctets[4];
 		
-		void setOctet(){
+		void setFirstOctet(){
 			if(IPClass == 'A'|| IPClass == 'a'){
 				do{
 					std::cout << "First Octet:";
@@ -16,7 +16,17 @@ class IPAddress{
 			}
 			else
 			if(IPClass == 'B' || IPClass == 'b'){
-				
+				do{
+					std::cout << "First Octet:";
+					std::cin >> IPOctets[0];
+				}while(IPOctets[0] < 128 && IPOctets[0] > 191);
+			}
+			else
+			if(IPClass == 'C' || IPClass == 'c'){
+				do{
+					std::cout << "First Octet";
+					std::cin >> IPOctets[0];
+				}while(IPOctets[0] < 192 && IPOctets[0] > 223);
 			}
 		}
 	public:
@@ -27,7 +37,7 @@ class IPAddress{
 		void setIPClass(char IPClass){
 			IPAddress::IPClass = IPClass;
 		}
-		void setOctets(std::string Octet,int index){
+		void setOctets(int Octet,int index){
 			IPOctets[index] = Octet;
 		}
 		//getters
@@ -37,7 +47,7 @@ class IPAddress{
 		char getIPClass(){
 			return IPClass;
 		}
-		std::string getOctets(int index){
+		int getOctets(int index){
 			return IPOctets[index];
 		}
 		
