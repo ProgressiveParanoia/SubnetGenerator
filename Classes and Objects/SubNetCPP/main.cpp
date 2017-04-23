@@ -8,6 +8,12 @@
 int main(int argc, char** argv) {
 	IPAddress myIP;
 	char choice;	
+	int test=1,target;
+	std::cin >> target;
+	
+	while(test < target){
+		test*=2;
+	}
 	
 	do{
 		system("cls");
@@ -20,6 +26,7 @@ int main(int argc, char** argv) {
 			system("pause>0");
 		}
 	}while(choice!='2');
+	
 //	std::string binary = std::bitset<8>(128).to_string(); //to binary
    // std::cout<<binary<<"\n";
 	 

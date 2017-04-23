@@ -4,12 +4,12 @@ class IPAddress{
 	
 	private:
 		int increment;
-		int IPOctets[4];
+		int IPOctets[4] = {-1,-1,-1,-1};
 		char IPClass;
 		bool _isPrivate;
 		
 		void setFirstOctet(){
-			system("cls");
+		
 			if(IPClass == 'A'|| IPClass == 'a'){
 				do{
 					system("cls");
@@ -18,6 +18,7 @@ class IPAddress{
 					std::cin >> IPOctets[0];
 					
 				}while(IPOctets[0] < 0 || IPOctets[0] > 127);
+			
 			}
 			else
 			if(IPClass == 'B' || IPClass == 'b'){
@@ -37,10 +38,10 @@ class IPAddress{
 					std::cin >> IPOctets[0];
 				}while(IPOctets[0] < 192 || IPOctets[0] > 223);
 			}
+			
 		}
 		
-		void setSucceddingOctets(){
-			
+		void setSuccedingOctets(){	
 			do{
 				system("cls");
 				
@@ -49,8 +50,37 @@ class IPAddress{
 			}while(IPOctets[1] < 0 || IPOctets[1] > 255);
 			
 			do{
+				system("cls");
 				
-			}while();
+				std::cout <<"IPv4 Class:" <<IPClass <<"\n Current IP:"<<IPOctets[0] <<"." <<IPOctets[1] <<"\n Third Octet:";
+				std::cin >> IPOctets[2];
+			}while(IPOctets[2] < 0 || IPOctets[2] > 255);
+			
+			do{
+				system("cls");
+				
+				std::cout << "IPv4 Class:" <<IPClass <<"\n Current IP:" <<IPOctets[0] <<"." <<IPOctets[1] <<"." << IPOctets[2] <<"\n Fourth Octet:";
+				std::cin >> IPOctets[3];
+			}while(IPOctets[3] < 0 || IPOctets[3] > 255);
+			
+		}
+		
+		void setSubnetAmount(){
+			system("cls");
+			
+			int amount;
+			
+			increment = 1;
+			
+			std::cout << "IPv4 Class:" <<IPClass <<"\n Current IP:"<<IPOctets[0]<<"."<<IPOctets[1]<<"."<<IPOctets[2] <<"." <<IPOctets[3] <<"\n number of subnets:";
+			std::cin >> amount;
+			
+			while(increment < amount){
+				amount*=2;
+			}
+			
+			std::cout << "Amount for Increment:" <<;
+			
 		}
 	public:
 		//setters
@@ -92,5 +122,6 @@ class IPAddress{
 			}while(IPClass != 'A' && IPClass != 'a' && IPClass != 'B' && IPClass != 'b' && IPClass != 'C' && IPClass != 'c');
 			
 			setFirstOctet();
-		}
+			setSuccedingOctets();
+		}	
 };
