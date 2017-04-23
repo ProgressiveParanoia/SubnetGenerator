@@ -6,28 +6,51 @@ class IPAddress{
 		int increment;
 		int IPOctets[4];
 		char IPClass;
+		bool _isPrivate;
 		
 		void setFirstOctet(){
+			system("cls");
 			if(IPClass == 'A'|| IPClass == 'a'){
 				do{
-					std::cout << "First Octet:";
+					system("cls");
+					
+					std::cout << "IPv4 Class:"<<IPClass<<"\nFirst Octet:";
 					std::cin >> IPOctets[0];
-				}while(IPOctets[0] < 0 && IPOctets[0] > 127);
+					
+				}while(IPOctets[0] < 0 || IPOctets[0] > 127);
 			}
 			else
 			if(IPClass == 'B' || IPClass == 'b'){
 				do{
-					std::cout << "First Octet:";
+					system("cls");
+					
+					std::cout << "IPv4 Class:"<<IPClass<<"\nFirst Octet:";
 					std::cin >> IPOctets[0];
-				}while(IPOctets[0] < 128 && IPOctets[0] > 191);
+				}while(IPOctets[0] < 128 || IPOctets[0] > 191);
 			}
 			else
 			if(IPClass == 'C' || IPClass == 'c'){
 				do{
-					std::cout << "First Octet";
+					system("cls");
+					
+					std::cout << "IPv4 Class:"<<IPClass<<"\nFirst Octet:";
 					std::cin >> IPOctets[0];
-				}while(IPOctets[0] < 192 && IPOctets[0] > 223);
+				}while(IPOctets[0] < 192 || IPOctets[0] > 223);
 			}
+		}
+		
+		void setSucceddingOctets(){
+			
+			do{
+				system("cls");
+				
+				std::cout <<"IPv4 Class:" <<IPClass <<"\n Current IP:"<<IPOctets[0] <<"\n Second Octet:";
+				std::cin >> IPOctets[1];
+			}while(IPOctets[1] < 0 || IPOctets[1] > 255);
+			
+			do{
+				
+			}while();
 		}
 	public:
 		//setters
@@ -43,6 +66,9 @@ class IPAddress{
 		//getters
 		int getIncrement(){
 			return increment;
+		}
+		bool isPrivate(){
+			return _isPrivate;
 		}
 		char getIPClass(){
 			return IPClass;
@@ -64,5 +90,7 @@ class IPAddress{
 				std::cin >> IPClass;
 	
 			}while(IPClass != 'A' && IPClass != 'a' && IPClass != 'B' && IPClass != 'b' && IPClass != 'C' && IPClass != 'c');
+			
+			setFirstOctet();
 		}
 };

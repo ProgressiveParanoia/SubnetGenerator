@@ -22,6 +22,6 @@ int main(int argc, char** argv) {
 	}while(choice!='2');
 //	std::string binary = std::bitset<8>(128).to_string(); //to binary
    // std::cout<<binary<<"\n";
-	
+	 
 	return 0;
 }	
