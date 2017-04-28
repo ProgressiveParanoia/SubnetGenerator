@@ -1,12 +1,23 @@
 #include <string>
+#include <bitset>
+#include <stdlib.h>
+#include <cmath>
+#include <algorithm>
 
 class IPAddress{
 	
 	private:
-		int increment;
+		
+		int MaxSubnets;
+		int BorrowedBits;
 		int IPOctets[4] = {-1,-1,-1,-1};
+		int newSubnetMask[4] = {-1,-1,-1,-1};
+		int increment = 0;
+		
 		char IPClass;
 		bool _isPrivate;
+
+		std::string binaryOctets[4];
 		
 		void setFirstOctet(){
 		
@@ -38,8 +49,7 @@ class IPAddress{
 					std::cin >> IPOctets[0];
 				}while(IPOctets[0] < 192 || IPOctets[0] > 223);
 			}
-			
-		}
+	}
 		
 		void setSuccedingOctets(){	
 			do{
@@ -62,30 +72,209 @@ class IPAddress{
 				std::cout << "IPv4 Class:" <<IPClass <<"\n Current IP:" <<IPOctets[0] <<"." <<IPOctets[1] <<"." << IPOctets[2] <<"\n Fourth Octet:";
 				std::cin >> IPOctets[3];
 			}while(IPOctets[3] < 0 || IPOctets[3] > 255);
-			
 		}
 		
 		void setSubnetAmount(){
+			
+				system("cls");		
+				
+				int amount;
+				BorrowedBits = 0;
+				
+				MaxSubnets = 1;
+			do{
+			
+				std::cout << "IPv4 Class:" <<IPClass <<"\nCurrent IP:"<<IPOctets[0]<<"."<<IPOctets[1]<<"."<<IPOctets[2] <<"." <<IPOctets[3] <<"\nNumber of subnets:";
+				std::cin >> amount;
+			
+			}while(amount < 1);
+			
+				while(MaxSubnets < amount){
+					MaxSubnets*=2;
+					BorrowedBits++;
+				}
+				
+				if(amount < 1)
+					MaxSubnets = 0;
+
+				std::cout << "Amount for MaxSubnets:" <<MaxSubnets <<"\nBorrowed Bits:" <<BorrowedBits;
+				system("pause>0");
+		}
+		
+		void CalculateSubnet(){
 			system("cls");
 			
-			int amount;
+			std::cout << "IPv4 Class:" <<IPClass <<"\nCurrent IP:"<<IPOctets[0]<<"."<<IPOctets[1]<<"."<<IPOctets[2] <<"." <<IPOctets[3] << "Amount for MaxSubnets:" <<MaxSubnets <<"\nBorrowed Bits:" <<BorrowedBits <<std::endl;
 			
-			increment = 1;
+			if(IPClass == 'A'||IPClass == 'a'){
+				for(int i = 0 ; i < sizeof(newSubnetMask)/sizeof(*newSubnetMask); i++){
+					if(i == 0)
+						newSubnetMask[i] = 255;
+						else
+							newSubnetMask[i] = 0;
+				}
+			}
+			if(IPClass == 'B'||IPClass == 'b'){
+				for(int i = 0 ; i < sizeof(newSubnetMask)/sizeof(*newSubnetMask); i++){
+					if(i <=1)
+						newSubnetMask[i] = 255;
+						else
+							newSubnetMask[i] = 0;
+			}
+		}
+			if(IPClass == 'C' || IPClass == 'c'){
+				for(int i = 0 ; i < sizeof(newSubnetMask)/sizeof(*newSubnetMask); i++){
+					if(i <= 2)
+						newSubnetMask[i] = 255;
+						else
+							newSubnetMask[i] = 0;
+			}	
+		}
+		
+		for(int i = 0; i < sizeof(newSubnetMask)/sizeof(*newSubnetMask); i++){
+			std::cout << newSubnetMask[i];
 			
-			std::cout << "IPv4 Class:" <<IPClass <<"\n Current IP:"<<IPOctets[0]<<"."<<IPOctets[1]<<"."<<IPOctets[2] <<"." <<IPOctets[3] <<"\n number of subnets:";
-			std::cin >> amount;
+			if(i <3)
+				std::cout << ".";
+		}
+		system("pause>0");
+	}
+		
+		void CalculateSubnetMask(){
+			std::cout << std::endl <<"Subnet Mask in Binary:";
 			
-			while(increment < amount){
-				amount*=2;
+			for(int i = 0; i <  sizeof(newSubnetMask)/sizeof(*newSubnetMask); i++){
+				int test = 0;
+				std::string binary = std::bitset<8>(newSubnetMask[i]).to_string(); //to binary	
+				binaryOctets[i] = binary;
+				
+				if(IPClass == 'A'|| IPClass == 'a'){
+					for(int x = 0; x < BorrowedBits; x++){
+						binaryOctets[1][x] = '1';
+					} 
+				}
+				if(IPClass == 'B'|| IPClass == 'b'){
+					for(int x = 0; x < BorrowedBits; x++){
+						binaryOctets[2][x] = '1';
+					} 
+				}
+				
+				if(IPClass == 'C'|| IPClass == 'c'){
+					for(int x = 0; x < BorrowedBits; x++){
+						binaryOctets[3][x] = '1';
+					} 
+				}
+				
+				
+				std::cout<<binaryOctets[i];
+				
+				if(i <3)
+					std::cout << ".";
+				else 
+					std::cout<<std::endl;	
+				
+				
+				
 			}
 			
-			std::cout << "Amount for Increment:" <<;
+				if(IPClass == 'A'|| IPClass == 'a'){
+					reverse(binaryOctets[1].begin(),binaryOctets[1].end());
+					
+					for(int j = 0; j < binaryOctets[1].size(); j++){
+						newSubnetMask[1] += (int(binaryOctets[1][j]) - 48) * pow(2,j);
+						std::cout << j <<":" <<newSubnetMask[1] <<":" <<(int(binaryOctets[1][j]) - 48) <<std::endl;
+					
+						if(newSubnetMask[1] != 0 && increment == 0)	
+							increment = newSubnetMask[1];					
+					}
+				}
 			
+			if(IPClass == 'B'|| IPClass == 'b'){
+				reverse(binaryOctets[2].begin(),binaryOctets[2].end());
+				
+				for(int j = 0; j < binaryOctets[2].size(); ++j){
+					newSubnetMask[2] += (int(binaryOctets[2].at(j)) - 48) * pow(2,j);
+				
+					if(newSubnetMask[2] != 0 && increment == 0)	
+						increment = newSubnetMask[2];
+				}
+			}
+			
+			if(IPClass == 'C'|| IPClass == 'c'){
+				reverse(binaryOctets[3].begin(),binaryOctets[3].end());
+				
+				for(int j = 0; j < binaryOctets[3].size(); ++j){
+					newSubnetMask[3] += (int(binaryOctets[3].at(j)) - 48) * pow(2,j);
+				
+					if(newSubnetMask[3] != 0 && increment == 0)	
+						increment = newSubnetMask[3];
+				}
+			}
+			
+			std::cout << "New Subnet Mask:";  
+			
+			for(int x = 0; x < sizeof(newSubnetMask)/sizeof(*newSubnetMask); x++){
+				std::cout<<newSubnetMask[x];
+				
+				if(x < 3){
+					std::cout<<".";				
+				}else
+					std::cout<<std::endl;	
+			}	
+			std::cout << "Increment:" << increment <<std::endl <<std::endl;				
+		}
+		
+		void CalculateNetworkAddress(){
+			if(IPClass == 'A'|| IPClass == 'a'){
+				for(int i = 0; i < MaxSubnets; i++){
+					if(IPOctets[1] < 255){
+						IPOctets[1] += increment;
+					}else{
+						IPOctets[2]++;
+						IPOctets[1] = 0;
+					}		
+					std::cout<<"Network Address:" << IPOctets[0] <<"." <<IPOctets[1] << "." <<IPOctets[2] <<"." <<IPOctets[3] 
+					<<" Broadcast Address:" << IPOctets[0] <<"." <<IPOctets[1] << "." <<IPOctets[2] <<"." <<IPOctets[3]+(increment-1) <<std::endl;
+				}
+			}else
+				if(IPClass == 'B'|| IPClass == 'b'){
+					for(int i = 0; i < MaxSubnets; i++){
+						if(IPOctets[2] < 255){
+							IPOctets[3] += increment;
+						}else{
+							IPOctets[3]++;
+							IPOctets[2] = 0;
+						}		
+						std::cout<<"Network Address:" << IPOctets[0] <<"." <<IPOctets[1] << "." <<IPOctets[2] <<"." <<IPOctets[3] 
+						<<" Broadcast Address:" << IPOctets[0] <<"." <<IPOctets[1] << "." <<IPOctets[2] <<"." <<IPOctets[3]+(increment-1) <<std::endl;
+					}
+				}else
+					if(IPClass == 'C'||IPClass == 'c'){
+						for(int i = 0; i < MaxSubnets; i++){
+							if(IPOctets[3] < 255){
+								IPOctets[3] += increment;
+							}else{
+								IPOctets[2]++;
+								IPOctets[3] = 0;
+							}		
+							
+							int broadcastOctet = IPOctets[3]+(increment-1);
+							std::cout<<"Network Address:" << IPOctets[0] <<"." <<IPOctets[1] << "." <<IPOctets[2] <<"." <<IPOctets[3] 
+							<<" Broadcast Address:" << IPOctets[0] <<"." <<IPOctets[1] << "." <<IPOctets[2] <<"." <<broadcastOctet <<std::endl;
+						}
+					}	
+		}
+		
+		void TabulateData(){
+			std::cout<<"SUBNET  Network Address  Host Address Range  Broadcast Address\n";
+			for(int i = 0; i < MaxSubnets; i++){
+				std::cout <<"SN  " << i <<"|" <<std::endl;
+			}
 		}
 	public:
 		//setters
-		void setIncrement(int increment){
-			IPAddress::increment = increment;
+		void setMaxSubnets(int MaxSubnets){
+			IPAddress::MaxSubnets = MaxSubnets;
 		}
 		void setIPClass(char IPClass){
 			IPAddress::IPClass = IPClass;
@@ -94,8 +283,8 @@ class IPAddress{
 			IPOctets[index] = Octet;
 		}
 		//getters
-		int getIncrement(){
-			return increment;
+		int getMaxSubnets(){
+			return MaxSubnets;
 		}
 		bool isPrivate(){
 			return _isPrivate;
@@ -107,6 +296,7 @@ class IPAddress{
 			return IPOctets[index];
 		}
 		
+
 		void displayInfo(){
 			std::cout<<"Class:"<<IPClass;
 		}
@@ -123,5 +313,12 @@ class IPAddress{
 			
 			setFirstOctet();
 			setSuccedingOctets();
-		}	
+			setSubnetAmount();
+			CalculateSubnet();
+			CalculateSubnetMask();
+			CalculateNetworkAddress();
+		//	TabulateData();
+			
+			system("pause>0");
+		}	 
 };
